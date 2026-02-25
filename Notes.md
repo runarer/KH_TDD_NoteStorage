@@ -9,9 +9,7 @@ The start is an implementation of a CRUD for notes.
 
 ## Process
 
-Write some tests for simple functionality.
-
-1.  Healthcheck, if the server does not exists nothing will work.
+1.  Write Healthcheck, if the server does not exists nothing will work.
 2.  Identify core of the system.
     In this case a CRUD, especially Create and Read is the core.
     There are more wants and usefull thing, but they fall under "nice to haves"
