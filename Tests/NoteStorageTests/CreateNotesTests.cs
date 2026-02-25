@@ -1,12 +1,29 @@
-﻿namespace NoteStorageTests;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Notes.Model.RequestResponse;
 
-public class CreateNotesTests
+namespace NoteStorageTests;
+
+public class CreateNotesTests(WebApplicationFactory<Program> factory) : TestEnvironment(factory)
 {
-    [Fact(Skip = "Waiting on implementation")]
-    public void CreateNote_CreateANoteWithTitleAndContentOnAnEmptyServer_NoteShouldBeCreatedAndReturnedInBodyAndCode201()
+
+
+
+    [Fact]
+    public async Task CreateNote_CreateANoteWithTitleAndContentOnAnEmptyServer_NoteShouldBeCreatedAndReturnedInBodyAndCode201()
     {
-        Assert.Fail("Test not yet implemented");
+        var client = Client;
+        var noteToCreate = new NoteCreationRequests("Test Note title", "Test note content");
+
+        var response = await client.PostAsJsonAsync("/notes", noteToCreate);
+        response.EnsureSuccessStatusCode();
+
+        var createResponse = await response.Content.ReadFromJsonAsync<NoteCreationResponse>();
+        Assert.NotNull(createResponse);
+        Assert.NotEmpty(createResponse.Id);
     }
+
     [Fact(Skip = "Waiting on implementation")]
     public void CreateNote_CreatesANoteWithoutTitle_ShouldNotBeCreatedAndReturn400AndErrorMessage()
     {
