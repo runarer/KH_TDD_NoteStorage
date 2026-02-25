@@ -1,2 +1,7 @@
 <Solution>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/NoteStorageTests/NoteStorageTests.csproj" />
+  </Folder>
+  <Project Path="Notes/Notes.csproj" />
+  <Project Path="NoteStorage/NoteStorage.csproj" />
 </Solution>
