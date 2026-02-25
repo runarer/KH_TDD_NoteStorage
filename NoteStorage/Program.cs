@@ -22,6 +22,9 @@ app.MapHealthChecks("/health");
 
 app.MapPost("/notes", (NoteCreationRequests request) =>
 {
+    if (string.IsNullOrWhiteSpace(request.Title))
+        return Results.BadRequest("Note needs a non empty title!");
+
     Note newNote = new() { Id = Guid.NewGuid(), Title = request.Title, Content = request.Content };
     return Results.Created($"/notes/{newNote.Id}", newNote);
 });
