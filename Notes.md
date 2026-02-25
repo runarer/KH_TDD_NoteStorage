@@ -50,6 +50,7 @@ The start is an implementation of a CRUD for notes.
 ### Discoveries
 
 3.1 Need a NoteCreationRequest object
+3.1 Need a NoteCreationResponse object
 
 ### Spørsmål
 
