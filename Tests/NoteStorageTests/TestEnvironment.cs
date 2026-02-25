@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 
+namespace NoteStorageTests;
 
 public class TestEnvironment : IClassFixture<WebApplicationFactory<Program>>
 {
