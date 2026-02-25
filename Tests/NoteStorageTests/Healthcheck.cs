@@ -2,15 +2,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace NoteStorageTests;
 
-public class HealthCheck : IClassFixture<WebApplicationFactory<Program>>
+public class HealthCheck(WebApplicationFactory<Program> factory) : TestEnvironment(factory)
 {
-    private readonly WebApplicationFactory<Program> _factory;
-
-    public HealthCheck(WebApplicationFactory<Program> factory)
-    {
-        _factory = factory;
-    }
-
     [Fact]
     public async Task Get_EndpointReturnSuccess()
     {
