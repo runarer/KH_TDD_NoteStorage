@@ -22,7 +22,7 @@ app.MapHealthChecks("/health");
 
 app.MapPost("/notes", (NoteCreationRequests request) =>
 {
-    Note newNote = new() { Id = Guid.NewGuid(), Title = request.Title };
+    Note newNote = new() { Id = Guid.NewGuid(), Title = request.Title, Content = request.Content };
     return Results.Created($"/notes/{newNote.Id}", newNote);
 });
 
