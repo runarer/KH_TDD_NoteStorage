@@ -51,6 +51,7 @@ The start is an implementation of a CRUD for notes.
 
 3.1 Need a NoteCreationRequest object
 3.1 Need a NoteCreationResponse object
+3.3 This test is the same as 3.1 so use `[Theroy]` instead
 
 ### Spørsmål
 
