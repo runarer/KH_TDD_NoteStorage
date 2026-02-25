@@ -9,14 +9,12 @@ namespace NoteStorageTests;
 public class CreateNotesTests(WebApplicationFactory<Program> factory) : TestEnvironment(factory)
 {
 
-
-
-    [Fact]
-    public async Task CreateNote_CreateANoteWithTitleAndContentOnAnEmptyServer_NoteShouldBeCreatedWithAGuiAndReturnedInBodyAndCode201()
+    [Theory]
+    [InlineData("Test Note Title", "Test Note Content")]
+    [InlineData("Test Note Title", "")]
+    public async Task CreateNote_CreateANoteWithTitleAndContentOnAnEmptyServer_NoteShouldBeCreatedWithAGuiAndReturnedInBodyAndCode201(string newNoteTitle, string newNoteContent)
     {
         var client = Client;
-        string newNoteTitle = "Test Note Title";
-        string newNoteContent = "Test note content";
         var noteToCreate = new NoteCreationRequests(newNoteTitle, newNoteContent);
 
         var response = await client.PostAsJsonAsync("/notes", noteToCreate);
@@ -42,14 +40,7 @@ public class CreateNotesTests(WebApplicationFactory<Program> factory) : TestEnvi
 
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        // var badRequest = Assert.IsType<BadRequestObjectResult>(response);
-        // Assert.NotNull(badRequest.Value);
-        // Assert.Contains("Title must be between 1 and 60 characters and cannot be empty.", badRequest.Value.ToString());
-    }
-
-    [Fact(Skip = "Waiting on implementation")]
-    public void CreateNote_CreateNoteWithTitleButNoContent_Return201AndNoteIsCreatedOnServer()
-    {
-        Assert.Fail("Test not yet implemented");
+        var badRequest = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Note needs a non empty title!", badRequest);
     }
 }
