@@ -47,6 +47,10 @@ The start is an implementation of a CRUD for notes.
     4.  Create several notes and delete on -> Return 204 on DELETE and 404 on GET.
         Make sure the other notes still exsists
 
+### Discoveries
+
+3.1 Need a NoteCreationRequest object
+
 ### Spørsmål
 
 Å teste at et program gjør det det skal er en ting, å teste at programmet bare gjør det
