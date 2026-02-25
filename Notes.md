@@ -57,3 +57,7 @@ The start is an implementation of a CRUD for notes.
 
 Å teste at et program gjør det det skal er en ting, å teste at programmet bare gjør det
 det skal er en annen ting. I hvilken grad skal Unit Test teste nummer to.
+
+Når jeg har en test for å lage noe på en server, jeg tester tilbakemeldinger som 201,
+link i header og objektet i body. Hva med å teste at linken gitt i header returnerer
+innholdet, eller er dette en test som hører inne under Read tester?
