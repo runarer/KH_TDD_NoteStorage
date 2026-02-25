@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Notes.Model;
 
-class Note
+public class Note
 {
     [Key]
     public required string Id { get; init; }
