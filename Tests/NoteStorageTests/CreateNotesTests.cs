@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Notes.Model.RequestResponse;
 
@@ -31,10 +32,19 @@ public class CreateNotesTests(WebApplicationFactory<Program> factory) : TestEnvi
         Assert.Contains($"/notes/{createResponse.Id}", response.Headers.Location.ToString());
     }
 
-    [Fact(Skip = "Waiting on implementation")]
-    public void CreateNote_CreatesANoteWithoutTitle_ShouldNotBeCreatedAndReturn400AndErrorMessage()
+    [Fact]
+    public async Task CreateNote_CreatesANoteWithoutTitle_ShouldNotBeCreatedAndReturn400AndErrorMessage()
     {
-        Assert.Fail("Test not yet implemented");
+        var client = Client;
+        var noteNotToCreate = new NoteCreationRequests("", "Test Content");
+
+        var response = await client.PostAsJsonAsync("/notes", noteNotToCreate);
+
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        // var badRequest = Assert.IsType<BadRequestObjectResult>(response);
+        // Assert.NotNull(badRequest.Value);
+        // Assert.Contains("Title must be between 1 and 60 characters and cannot be empty.", badRequest.Value.ToString());
     }
 
     [Fact(Skip = "Waiting on implementation")]
