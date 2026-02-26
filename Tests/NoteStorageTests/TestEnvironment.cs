@@ -23,17 +23,23 @@ public class TestEnvironment : IClassFixture<WebApplicationFactory<Program>>
 
     protected static async Task<List<Uri>> FillServerWithNotes(HttpClient client, NoteCreationRequests[] notes)
     {
-        List<Uri> noteLocations = [];
-        for (int i = 0; i < notes.Length; i++)
+        var tasks = notes.Select(async note =>
         {
-            var response = await client.PostAsJsonAsync("/notes", notes[i]);
-            response.EnsureSuccessStatusCode();
+            var addedNote = await AddNoteToServer(client, note);
+            return addedNote;
+        });
 
-            var noteLocation = response.Headers.Location;
-            Assert.NotNull(noteLocation);
-            noteLocations.Add(noteLocation);
-        }
-        return noteLocations;
+        var results = await Task.WhenAll(tasks);
+
+        return [.. results];
+    }
+
+    protected static async Task<Uri> AddNoteToServer(HttpClient client, NoteCreationRequests note)
+    {
+        var responseCreateNote = await client.PostAsJsonAsync("/notes", note);
+        responseCreateNote.EnsureSuccessStatusCode();
+        Assert.NotNull(responseCreateNote.Headers.Location);
+        return responseCreateNote.Headers.Location;
     }
 
     protected readonly NoteCreationRequests[] notes =
