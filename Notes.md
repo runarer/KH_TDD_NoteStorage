@@ -52,6 +52,7 @@ The start is an implementation of a CRUD for notes.
 3.1 Need a NoteCreationRequest object
 3.1 Need a NoteCreationResponse object
 3.3 This test is the same as 3.1 so use `[Theroy]` instead
+The whole test on empty server special case is probably redundant.
 
 ### Spørsmål
 
@@ -61,3 +62,7 @@ det skal er en annen ting. I hvilken grad skal Unit Test teste nummer to.
 Når jeg har en test for å lage noe på en server, jeg tester tilbakemeldinger som 201,
 link i header og objektet i body. Hva med å teste at linken gitt i header returnerer
 innholdet, eller er dette en test som hører inne under Read tester?
+-> Hører under read!
+
+Flere av testene er for tomme servere. Er dette noe man skal teste i denne sammenhengen?
+Er 0,1,mange riktig tankegang.
