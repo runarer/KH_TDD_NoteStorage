@@ -1,6 +1,8 @@
 using Notes.Model;
 using Notes.Model.RequestResponse;
 
+Dictionary<Guid, Note> noteStorage = [];
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,7 +28,19 @@ app.MapPost("/notes", (NoteCreationRequests request) =>
         return Results.BadRequest("Note needs a non empty title!");
 
     Note newNote = new() { Id = Guid.NewGuid(), Title = request.Title, Content = request.Content };
+
+    noteStorage[newNote.Id] = newNote;
+
     return Results.Created($"/notes/{newNote.Id}", newNote);
+});
+
+
+app.MapGet("/notes{id:Guid}", (Guid id) =>
+{
+    // Does it not exist
+    //return 404
+
+    //     
 });
 
 app.Run();
