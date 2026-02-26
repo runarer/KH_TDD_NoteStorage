@@ -50,7 +50,7 @@ public class ReadNotesTests(WebApplicationFactory<Program> factory) : TestEnviro
 
         var response = await client.GetAsync("/notes/00000000-0010-0110-0230-000000000000");
 
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var badRequest = await response.Content.ReadAsStringAsync();
         Assert.Contains("Note not found!", badRequest);
 
@@ -81,7 +81,7 @@ public class ReadNotesTests(WebApplicationFactory<Program> factory) : TestEnviro
 
         var response = await client.GetAsync("/notes/00000000-0010-0110-0230-000000000000");
 
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var badRequest = await response.Content.ReadAsStringAsync();
         Assert.Contains("Note not found!", badRequest);
 
