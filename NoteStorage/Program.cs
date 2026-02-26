@@ -43,5 +43,26 @@ app.MapGet("/notes/{id:Guid}", (Guid id) =>
     return Results.Ok(note);
 });
 
+app.MapPut("notes/{id:Guid}", (Guid id, NoteUpdateRequest updateNote) =>
+{
+    // Make sure id matches the id in the update note
+    if (id != updateNote.Id)
+        return Results.UnprocessableEntity("Id in body did not match id in link.");
+
+    // Does the note exist
+    if (!noteStorage.ContainsKey(id))
+        return Results.NotFound("Note not found!");
+
+    noteStorage[id] = new Note()
+    {
+        Id = updateNote.Id,
+        Title = updateNote.Title,
+        Content = updateNote.Content,
+    };
+
+    return Results.Ok();
+
+});
+
 app.Run();
 
