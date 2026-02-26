@@ -35,12 +35,12 @@ app.MapPost("/notes", (NoteCreationRequests request) =>
 });
 
 
-app.MapGet("/notes{id:Guid}", (Guid id) =>
+app.MapGet("/notes/{id:Guid}", (Guid id) =>
 {
-    // Does it not exist
-    //return 404
+    if (!noteStorage.TryGetValue(id, out Note? note))
+        return Results.NotFound("Note not found!");
 
-    //     
+    return Results.Ok(note);
 });
 
 app.Run();
