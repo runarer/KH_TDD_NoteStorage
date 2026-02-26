@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Notes.Model.RequestResponse;
 
@@ -20,9 +19,9 @@ public class CreateNotesTests(WebApplicationFactory<Program> factory) : TestEnvi
         var response = await client.PostAsJsonAsync("/notes", noteToCreate);
         response.EnsureSuccessStatusCode();
 
-        var createResponse = await response.Content.ReadFromJsonAsync<NoteCreationResponse>();
+        var createResponse = await response.Content.ReadFromJsonAsync<NoteResponse>();
         Assert.NotNull(createResponse);
-        Assert.NotEmpty(createResponse.Id);
+        Assert.NotEqual(Guid.Empty, createResponse.Id);
         Assert.Equal(newNoteTitle, createResponse.Title);
         Assert.Equal(newNoteContent, createResponse.Content);
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
