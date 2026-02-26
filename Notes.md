@@ -38,6 +38,7 @@ The start is an implementation of a CRUD for notes.
         Make sure other objects stay the same.
     4.  Create several notes, update a non exsisting one -> Return 404 and error message
         Make sure other objects stay the same.
+    5.  Create a note then try to update it using wrong Id in body -> Return 422 and error message
 6.  Write test for the deletion of notes (DELETE)
     1.  Delete a non-exsiting note on a empty server -> Return 404 and error message
     2.  Create several notes, delete a non-exsisting one -> Return 404 and error message
@@ -50,8 +51,9 @@ The start is an implementation of a CRUD for notes.
 ### Discoveries
 
 3.1 Need a NoteCreationRequest object
-3.1 Need a NoteCreationResponse object
+3.1 Need a NoteResponse object
 3.3 This test is the same as 3.1 so use `[Theroy]` instead
+5.1 Need a NoteUpdateRequest object
 The whole test on empty server special case is probably redundant.
 
 ### Spørsmål
