@@ -61,12 +61,12 @@ public class ReadNotesTests(WebApplicationFactory<Program> factory) : TestEnviro
     {
         var client = Client;
         var createdNotes = await FillServerWithNotes(client, notes);
+        var locationOfThirdNote = await GetLocationOfResponse(createdNotes[2]);
 
-        var responseReadNote = await client.GetAsync(createdNotes[2]);
+        var responseReadNote = await client.GetAsync(locationOfThirdNote);
 
         responseReadNote.EnsureSuccessStatusCode();
         var response = await responseReadNote.Content.ReadFromJsonAsync<NoteResponse>();
-
         Assert.NotNull(response);
         Assert.NotEqual(Guid.Empty, response.Id);
         Assert.Equal(notes[2].Title, response.Title);
