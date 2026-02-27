@@ -71,6 +71,4 @@ public class DeleteNotesTests(WebApplicationFactory<Program> factory) : TestEnvi
         var notFound = await responseReadDeletedNote.Content.ReadAsStringAsync();
         Assert.Contains("Note not found!", notFound);
     }
-
-
 }

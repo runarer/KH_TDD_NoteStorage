@@ -64,5 +64,16 @@ app.MapPut("notes/{id:Guid}", (Guid id, NoteUpdateRequest updateNote) =>
 
 });
 
+app.MapDelete("notes/{id:Guid}", (Guid id) =>
+{
+    // Does the note exist
+    if (!noteStorage.ContainsKey(id))
+        return Results.NotFound("Note not found!");
+
+    noteStorage.Remove(id);
+
+    return Results.Ok();
+});
+
 app.Run();
 
