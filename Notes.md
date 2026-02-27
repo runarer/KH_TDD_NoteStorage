@@ -9,6 +9,8 @@ The start is an implementation of a CRUD for notes.
 
 ## Process
 
+### Core testing
+
 1.  Write Healthcheck, if the server does not exists nothing will work.
 2.  Identify core of the system.
     In this case a CRUD, especially Create and Read is the core.
@@ -41,6 +43,25 @@ The start is an implementation of a CRUD for notes.
     2.  Create several notes, delete a non-exsisting one -> Return 404 and error message
     3.  Create a note and delete it, try to read it. -> Return 204 on DELETE and 404 on GET.
     4.  Create several notes and delete on -> Return 204 on DELETE and 404 on GET.
+
+### Add presistence -> Containerization
+
+The server does not save notes between restarts.
+
+To solve this we can:
+
+- Write to a file
+- Add a database
+- Send data to another server,
+- Print to paper and scan document back in.
+  The NEO robot can be recommended for this one.
+
+The NEO is out of budget so we land on adding a database. Installing one can be a awfull
+process, but using containerization like docker can make it very straight forward.
+
+1. Install PostgreSQL in a docker container. This is one line command.
+2. Containerize the NoteStorage App.
+3. Write a Docker compose file to combine app and db.
 
 ### Discoveries
 
