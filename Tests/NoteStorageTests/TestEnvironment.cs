@@ -23,15 +23,15 @@ public class TestEnvironment : IClassFixture<WebApplicationFactory<Program>>
 
     protected static async Task<List<HttpResponseMessage>> FillServerWithNotes(HttpClient client, NoteCreationRequests[] notes)
     {
-        var tasks = notes.Select(async note =>
+        List<HttpResponseMessage> results = [];
+
+        foreach (var note in notes)
         {
             var addedNote = await AddNoteToServer(client, note);
-            return addedNote;
-        });
+            results.Add(addedNote);
+        }
 
-        var results = await Task.WhenAll(tasks);
-
-        return [.. results];
+        return results;
     }
 
     protected static async Task<HttpResponseMessage> AddNoteToServer(HttpClient client, NoteCreationRequests note)
