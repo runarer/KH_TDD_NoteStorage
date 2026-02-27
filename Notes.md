@@ -32,21 +32,15 @@ The start is an implementation of a CRUD for notes.
         to make sure it doesn't just return "first note" or some random note.
 5.  Write test for updating existing data (UPDATE)
     1.  Create a note, update it, read it back. -> Return 200 and the updated object
-        Make sure the object is changed on the server.
     2.  Update a note when non exsist -> Return 404 and error message
     3.  Create several notes, update one, read it back -> Return 200 and updated object
-        Make sure other objects stay the same.
     4.  Create several notes, update a non exsisting one -> Return 404 and error message
-        Make sure other objects stay the same.
     5.  Create a note then try to update it using wrong Id in body -> Return 422 and error message
 6.  Write test for the deletion of notes (DELETE)
     1.  Delete a non-exsiting note on a empty server -> Return 404 and error message
     2.  Create several notes, delete a non-exsisting one -> Return 404 and error message
-        Make sure all notes exists.
     3.  Create a note and delete it, try to read it. -> Return 204 on DELETE and 404 on GET.
-        Make sure it's gone from the server
     4.  Create several notes and delete on -> Return 204 on DELETE and 404 on GET.
-        Make sure the other notes still exsists
 
 ### Discoveries
 
