@@ -7,28 +7,69 @@
         Make sure the other notes still exsists
 */
 
+using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace NoteStorageTests;
 
 public class DeleteNotesTests(WebApplicationFactory<Program> factory) : TestEnvironment(factory)
 {
-    [Fact(Skip = "Not implenented yet")]
+    [Fact]
     public async Task DELETE_DeleteANonExsistingNoteFromAnEmptyServer_Returns404AndAnErrorMessage()
     {
+        var client = Client;
+        var guid = Guid.NewGuid();
+
+        var response = await client.DeleteAsync($"/notes/{guid}");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var badRequest = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Note not found!", badRequest);
 
     }
 
-    [Fact(Skip = "Not implenented yet")]
-    public async Task DELETE_CreateSeveralNotesThenDeleteANonExsistingOne_Returns404AndAnErrorMessageAndAllNotesStillExsists()
+    [Fact]
+    public async Task DELETE_CreateSeveralNotesThenDeleteANonExsistingOne_Returns404AndAnErrorMessage()
     {
+        var client = Client;
 
+        // Fill server with notes and make a wrong GUID,
+        var createdNotes = await FillServerWithNotes(client, notes);
+        var wrongGuid = Guid.NewGuid();
+
+        // make sure the notes on the server does not have the same GUID
+        var createdNotesResponsesTask = createdNotes.Select(GetNoteResponse);
+        var createdNotesResponses = await Task.WhenAll(createdNotesResponsesTask);
+        var createdNotesGuids = createdNotesResponses.Select(item => item.Id).ToArray();
+        Assert.DoesNotContain(wrongGuid, createdNotesGuids);
+
+        // Action
+        var response = await client.DeleteAsync($"/notes/{wrongGuid}");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var notFound = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Note not found!", notFound);
     }
 
-    [Fact(Skip = "Not implenented yet")]
-    public async Task DELETE_CreateSeveralNotesDeleteOne_Returns200AndOtherNotesStillExsists()
+    [Fact]
+    public async Task DELETE_CreateSeveralNotesDeleteOne_Returns200()
     {
+        var client = Client;
 
+        var createdNotes = await FillServerWithNotes(client, notes);
+        var locationOfThirdNote = await GetLocationOfResponse(createdNotes[2]);
+
+        // Action
+        var response = await client.DeleteAsync(locationOfThirdNote);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var responseReadDeletedNote = await client.GetAsync(locationOfThirdNote);
+
+        Assert.Equal(HttpStatusCode.NotFound, responseReadDeletedNote.StatusCode);
+        var notFound = await responseReadDeletedNote.Content.ReadAsStringAsync();
+        Assert.Contains("Note not found!", notFound);
     }
 
 
