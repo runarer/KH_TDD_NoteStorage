@@ -21,7 +21,7 @@ public class TestEnvironment : IClassFixture<WebApplicationFactory<Program>>
         _factory = new WebApplicationFactory<Program>();
     }
 
-    protected static async Task<List<Uri>> FillServerWithNotes(HttpClient client, NoteCreationRequests[] notes)
+    protected static async Task<List<HttpResponseMessage>> FillServerWithNotes(HttpClient client, NoteCreationRequests[] notes)
     {
         var tasks = notes.Select(async note =>
         {
@@ -34,12 +34,25 @@ public class TestEnvironment : IClassFixture<WebApplicationFactory<Program>>
         return [.. results];
     }
 
-    protected static async Task<Uri> AddNoteToServer(HttpClient client, NoteCreationRequests note)
+    protected static async Task<HttpResponseMessage> AddNoteToServer(HttpClient client, NoteCreationRequests note)
     {
         var responseCreateNote = await client.PostAsJsonAsync("/notes", note);
         responseCreateNote.EnsureSuccessStatusCode();
-        Assert.NotNull(responseCreateNote.Headers.Location);
-        return responseCreateNote.Headers.Location;
+
+        return responseCreateNote;
+    }
+
+    protected static async Task<Uri> GetLocationOfResponse(HttpResponseMessage response)
+    {
+        Assert.NotNull(response.Headers.Location);
+        return response.Headers.Location;
+    }
+
+    protected static async Task<NoteResponse> GetNoteResponse(HttpResponseMessage response)
+    {
+        var createdNoteResponse = await response.Content.ReadFromJsonAsync<NoteResponse>();
+        Assert.NotNull(createdNoteResponse);
+        return createdNoteResponse;
     }
 
     protected readonly NoteCreationRequests[] notes =
